@@ -1,0 +1,65 @@
+h3, h4 {
+    padding: 10px;
+    font-style: italic;
+    margin-top: 1.5em;
+    /* margin-bottom: 1.5em; */
+}
+
+tr {
+    border-bottom: none;
+}
+/* [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+    position: static;
+    opacity: 1;
+} */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    display: none;
+    -web-appearance: none;
+}
+
+input[type="time"]::-webkit-inner-spin-button {
+    position: relative;
+    top: .7em;
+}
+
+.select2-container .select2-selection--single, .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 40px !important;
+}
+.select2-container {
+    width: 100% !important;
+}
+
+.row {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.help-block {
+    color: red;
+}
+
+.card-content {
+    padding: 4px 20px !important;
+}
+
+.card-title {
+    margin-top: 8px;
+}
+
+td a.btn-small + a.btn-small {
+    margin-left: 10px;
+}
+
+i.material-icons + input[type="submit"] {
+    padding-left: 2.5em;
+}
+
+.card-action form > i.material-icons {
+    position: relative;
+    left: 1.5em;
+    top: .3em;
+}
