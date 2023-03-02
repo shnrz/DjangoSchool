@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration Info | {% endblock  %}
+
+{% block custom_styles %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/details.css" %}" />
+{% endblock  %}
+
+{% block content %}
+
+<h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">Registration Info</h2>
+
+<div class="row">
+   <div class="col s3 valign-wrapper"><p><strong>Student:</strong></p></div>
+   <div class="col s6 grey lighten-2"><a href="{{registration.student.get_absolute_url }}">{{registration.student}}</a></div>
+</div>
+<div class="row">
+   <div class="col s3 valign-wrapper"><p><strong>Date registered:</strong></p></div>
+   <div class="col s6 grey lighten-2">{{registration.registration_date}}</div>
+</div>
+<div class="row">
+   <div class="col s3 valign-wrapper"><p><strong>Grade:</strong></p></div>
+   <div class="col s6 grey lighten-2">{{registration.grade}}</div>
+</div>
+<div class="row">
+   <div class="col s3 valign-wrapper"><p><strong>Notes:</strong></p></div>
+   <div class="col s6 grey lighten-2">{{registration.notes}}</div>
+</div>
+<div class="row">
+   <div class="col s3 valign-wrapper"><p><strong>Active:</strong></p></div>
+   <div class="col s6 grey lighten-2">{% if registration.is_active %}Yes{% else %}No{% endif %}</div>
+</div>
+
+<div class="row" style="margin-top: 5em;">
+   <div class="right">
+      <a class="btn-large waves-effect waves-light" href="{% url 'registration:registration-update' registration.id %}"><i class="material-icons left">edit</i> Edit</a>
+      <a class="btn-large waves-effect waves-light red darken-3" href="{% url 'registration:registration-delete' registration.id %}" style="margin-left: 10px;"><i class="material-icons left">delete</i> Delete</a>
+   </div>
+</div>
+
+{% endblock  %}

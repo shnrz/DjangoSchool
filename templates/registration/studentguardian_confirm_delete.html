@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Unlink student-guardian | {% endblock title %}
+
+{% block custom_styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+{% endblock custom_styles %}
+
+{% block content %}
+
+<h1>Confirm unlink</h1>
+
+<div class="row">
+    <div class="col s12 m9">
+        <div class="card">
+            <div class="card-content" style="line-height: 2em;">
+                <p>You are trying to unlink the following student and guardian:</p>
+                <ul style="padding-left: 2em;">
+                    <li><strong>STUDENT:</strong> {{object.student}}</li>
+                    <li><strong>GUARDIAN:</strong> {{object.guardian}} ({{object.relationship}})</li>
+                </ul>
+                <p>Are you sure you want to unlink these two?</p>
+            </div>
+            <div class="card-action">
+                <form action="" method="post">
+                {% csrf_token %}
+                    <a href="javascript:history.back()" class="btn grey"><i class="material-icons left">cancel</i> Cancel</a>
+                    <i class="material-icons white-text">call_split</i>
+                    <input class="btn red darken-2" type="submit" value="Confirm" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

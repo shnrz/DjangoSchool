@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Grade {{registration_list.0.grade}} registrations | {% endblock  %}
+
+{% block content %}
+
+<h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">Registrations</h2>
+{% if registration_list %}
+   <div class="row">
+      <h3 class="teal-text">Grade {{registration_list.0.grade}}</h3>
+      <div class="col s12 m6">
+
+         <div class="collection">
+            {% for registration in registration_list %}
+               <a href="{{ registration.get_absolute_url }}" class="collection-item">{{registration.student}}</a>
+            {% endfor %}
+         </div>
+
+      </div>
+   </div>
+{% else %}
+   <p>There are no registrations for this grade.</p>
+{% endif %}
+
+{% endblock  %}

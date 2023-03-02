@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Students | {% endblock  %}
+
+{% block content %}
+
+<h1>Find a student</h1>
+
+{% if student_list %}
+
+   <div class="row">
+      <div class="input-field col s12 m6">
+         <i class="material-icons prefix">search</i>
+         <input type="text" name="searchInput" id="searchInput" />
+         <label for="searchInput">Enter student's name...</label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col s12 m6">
+         <div class="collection" id="filterList">
+            {% for student in student_list %}
+            <a class="collection-item" href="{{ student.get_absolute_url }}">{{ student }}</a>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+
+   <ul>
+   </ul>
+
+{% else %}
+   <p>There are no students in the system.</p>
+{% endif %}
+
+{% endblock  %}
+
+{% block custom_scripts %}
+{% load static %}
+<script type="text/javascript" language='Javascript' src="{% static "js/filtercollection.js" %}"></script>
+{% endblock  %}

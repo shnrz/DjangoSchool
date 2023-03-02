@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrations Home | {% endblock  %}
+
+{% block content %}
+   <div class="row">
+      <div class="col s12">
+         <h1>Student registration</h1>
+         <p>Welcome to the CNI student registration system.</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12 m4">
+         <div class="collection with-header z-depth-1">
+            <div class="collection-header teal white-text"><h5>Students</h5></div>
+            <a class="collection-item teal-text text-darken-1" href="{% url 'registration:student-create' %}"><i class="material-icons">person_add</i> Create student</a>
+            <a class="collection-item teal-text text-darken-1" href="{% url 'registration:student-list' %}"><i class="material-icons">search</i> Find student</a>
+         </div>
+      </div>
+      <div class="col s12 m4">
+         <div class="collection with-header z-depth-1">
+            <div class="collection-header teal white-text"><h5>Guardians</h5></div>
+            <a href="{% url 'registration:guardian-create' %}" class="collection-item teal-text text-darken-1"><i class="material-icons">person_add</i> Create guardian</a>
+            <a href="{% url 'registration:guardian-list' %}" class="collection-item teal-text text-darken-1"><i class="material-icons">search</i> Find guardian</a>
+         </div>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col s12 m4">
+         <div class="collection with-header z-depth-1">
+            <div class="collection-header teal white-text"><h5>Registrations</h5></div>
+            <a href="{% url 'registration:registration-create' %}" class="collection-item teal-text text-darken-1"><i class="material-icons">add</i> Create registration</a>
+            <a class="collection-item teal-text text-darken-1" href="{% url 'registration:registration-list' %}"><i class="material-icons">folder</i> Browse registrations</a>
+         </div>
+      </div>
+      <div class="col s12 m4">
+         <div class="collection with-header z-depth-1">
+            <div class="collection-header teal white-text"><h5>Courses</h5></div>
+            <a href="{% url 'faculty:coursestudent-create' %}" class="collection-item teal-text text-darken-1"><i class="material-icons">person_add</i> Enroll course</a>
+         </div>
+      </div>
+   </div>
+
+{% endblock  %}

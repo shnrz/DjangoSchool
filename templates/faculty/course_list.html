@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}All courses | {% endblock  %}
+
+{% block content %}
+
+<h1>Find a course</h1>
+
+{% if course_list %}
+
+   <div class="row">
+      <div class="input-field col s12 m6">
+         <i class="material-icons prefix">search</i>
+         <input type="text" name="searchInput" id="searchInput" />
+         <label for="searchInput">Enter course name...</label>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col s12 m6">
+         <div class="collection" id="filterList">
+            {% for course in course_list %}
+            <a class="collection-item" href="{{ course.get_absolute_url }}">{{ course }}</a>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+
+   <ul>
+   </ul>
+
+{% else %}
+   <p>There are no courses created in the system.</p>
+{% endif %}
+
+{% endblock  %}
+
+{% block custom_scripts %}
+{% load static %}
+<script type="text/javascript" language='Javascript' src="{% static "js/filtercollection.js" %}"></script>
+{% endblock  %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrations | {% endblock  %}
+
+{% block content %}
+
+<h1>Registrations</h1>
+{% if registration_list %}
+   <div class="row">
+      <div class="col s12 m6">
+         <table class="highlight">
+            <thead>
+               <tr class="teal white-text center-align">
+                  <th class="center-align"><strong>Grade</strong></th>
+                  <th class="center-align"><strong>No. Registrations</strong></th>
+                  <th></th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for grade, count in registration_counts.items %}
+                  <tr>
+                     <td class="center-align">{{grade}}</td>
+                     <td class="center-align">{{count}}</td>
+                     <td class="center-align"><a class="btn-small" href="{% if grade != 'Prekinder' and grade != 'Kinder' %}{% url 'registration:registration-sublist' grade %}{% else %}#{% endif %}"><i class="material-icons left">visibility</i> View</a></td>
+                  </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+{% else %}
+   <p>There are no registrations in the system.</p>
+{% endif %}
+
+{% endblock  %}

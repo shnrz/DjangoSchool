@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+   <title>{% block title %}{% endblock  %}Colegio Nórdico Internacional</title>
+   {% load static %}
+   <link rel="shortcut icon" href="{% static 'img/favicon-16x16.png' %}" type="image/x-icon" />
+   <!-- Materialize theme -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   <link rel="stylesheet" href="{% static "css/general.css" %}" />
+   {% block custom_styles %}{% endblock  %}
+</head>
+<body>
+   <div class="navbar-fixed">
+      <nav class="grey darken-4">
+         <div class="container nav-wrapper">
+            <div class="row">
+               <div class="col s12">
+                  <span>
+                     <a href="{% url 'registration:index' %}" class="left brand-logo">
+                        <img class="responsive-img hide-on-small-only" src="{% static 'img/cni-logo.png' %}" style="width: 53px; padding-top: 5px;">
+                        <span style="padding-left: 10px; position: fixed; top: 0;">CNI Intranet</span>
+                     </a>
+                  </span>
+                  <ul class="right hide-on-med-and-down">
+                     <li><a href="{% url 'registration:index' %}">Students</a></li>
+                     <li><a href="{% url 'faculty:index' %}">Faculty</a></li>
+                     <li><a href="#">HR</a></li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </nav>
+   </div>
+   <div class="container" style="padding-bottom: 5rem; min-height: 65vh;">
+      {% block content %}{% endblock  %}
+   </div>
+   <footer class="page-footer grey darken-3">
+      <div class="container">
+         <div class="row">
+            <div class="col s12 m7">
+               <h5 class="white-text">Contact Us</h5>
+               <p class="grey-text text-lighten-4">Edificio Scala, 700 metros al sur.</p>
+               <p class="grey-text text-lighten-4"><i class="tiny material-icons">phone</i> (505) 2277-1113</p>
+            </div>
+            <div class="col s12 m5">
+               <h5 class="white-text">Links</h5>
+               <p>
+                  <a href="#!"><i class="fab fa-facebook-square teal-text text-lighten-3"></i></a>
+                  <a href="#!"><i class="fab fa-twitter-square teal-text text-lighten-3"></i></a>
+                  <a href="#!"><i class="fab fa-instagram teal-text text-lighten-3"></i></a>
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="footer-copyright">
+         <div class="container">
+            <div class="row">
+               <div class="col s12 m7">
+                  <p>© 2019 Colegio Nórdico Internacional</p>
+               </div>
+               <div class="col s12 m5">
+                  <p>Developed and maintained by <em>Pututu Development</em>.</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </footer>
+   <script src="https://kit.fontawesome.com/7db38354f4.js" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   {% block custom_scripts %}{% endblock  %}
+</body>
+</html>

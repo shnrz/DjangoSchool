@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}{{guardian}} | {% endblock  %}
+
+{% block custom_styles %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/details.css" %}" />
+{% endblock  %}
+
+{% block content %}
+<h5 style="margin-top: 2em;">Guardian Information</h5>
+<h3 class="teal lighten-1 white-text" style="font-style: italic; padding: 10px;">{{ guardian }}</h3>
+
+<div class="section">
+   <h4 class="teal-text">Personal info</h4>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>First name</strong></p>
+         <p class="grey lighten-2">{{guardian.first_name}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Middle name</strong></p>
+         <p class="grey lighten-2">{{guardian.middle_name}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Last name 1</strong></p>
+         <p class="grey lighten-2">{{guardian.last_name_1}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Last name 2</strong></p>
+         <p class="grey lighten-2">{{guardian.last_name_2}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12">
+         <p><strong>Observations</strong></p>
+         <p class="grey lighten-2">{{guardian.notes}}</p>
+      </div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Contact info</h4>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>Phone (mobile 1)</strong></p>
+         <p class="grey lighten-2">{{guardian.phone_mobile_1}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Phone (mobile 2)</strong></p>
+         <p class="grey lighten-2">{{guardian.phone_mobile_2}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Phone (home)</strong></p>
+         <p class="grey lighten-2">{{guardian.phone_home}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Phone (work)</strong></p>
+         <p class="grey lighten-2">{{guardian.phone_work}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12 m6">
+         <p><strong>Email</strong></p>
+         <p class="grey lighten-2">{{guardian.email}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12">
+         <p><strong>Address (home)</strong></p>
+         <p class="grey lighten-2">{{guardian.address_home}}</p>
+      </div>
+      <div class="col s12">
+         <p><strong>Address (work)</strong></p>
+         <p class="grey lighten-2">{{guardian.address_work}}</p>
+      </div>
+      <div class="col s12">
+         <p><strong>Address (other)</strong></p>
+         <p class="grey lighten-2">{{guardian.address_other}}</p>
+      </div>
+   </div>
+</div>
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Linked students</h4>
+   <div class="row">
+      <div class="col s12 m6">
+         {% if guardian.student_guardian.all|length > 0 %}
+            <div class="collection">
+            {% for studguard in guardian.student_guardian.all %}
+               <a href="{{studguard.student.get_absolute_url}}" class="collection-item">{{studguard.student}}</a>
+            {% endfor %}
+            </div>
+         {% else %}
+            <p>There are no students associated with this guardian.</p>
+         {% endif %}
+      </div>
+   </div>
+</div>
+
+<div class="row" style="margin-top: 5em;">
+   <a href="{% url 'registration:guardian-update' guardian.id %}" class="btn-large right"><i class="material-icons left">edit</i> Edit guardian</a>
+</div>
+
+{% endblock  %}

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}(edit) {{guardian}} | {% endblock  %}
+
+{% load staticfiles %}
+
+{% block custom_styles %}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+   <div class="col s12">
+      <form action="" method="post">
+         {% csrf_token %}
+
+        <h5 style="margin-top: 2em;">Edit guardian</h5>
+        <h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">{{ guardian }}</h2>
+
+         {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+         <div class="row">
+            <h4 class="teal-text">Guardian information</h4>
+         </div>
+
+         {% load materializecss %}
+         {% for field in form %}
+
+            {% if field.name == 'first_name' %}
+            <div class="teal lighten-5 z-depth-1" style="padding: 2em;">
+            {% endif %}
+
+            {% if field.name in 'first_name, gender, notes, phone_mobile_1' or 'address' in field.name %}
+               <div class="row">
+            {% endif %}
+
+            {% if field.name == 'first_name' %}
+               {{field|materializecss:'s12 m3, icon=person'}}
+            {% elif field.name == 'email' %}
+               {{field|materializecss:'s12 m6, icon=email'}}
+            {% elif 'notes' in field.name %}
+               {{field|materializecss:'s12 m12, icon=note'}}
+            {% elif field.name == 'phone_mobile_1' %}
+               {{field|materializecss:'s12 m3, icon=phone'}}
+            {% elif field.name == 'address_home' %}
+               {{field|materializecss:'s12 m9, icon=home'}}
+            {% elif field.name == 'address_work' %}
+               {{field|materializecss:'s12 m9, icon=work'}}
+            {% elif field.name == 'address_other' %}
+               {{field|materializecss:'s12 m9, icon=place'}}
+            {% else %}
+               {{field|materializecss:'s12 m3'}}
+            {% endif %}
+
+            {% if field.name in 'last_name_2, phone_work, email, notes' or 'address' in field.name %}
+               </div>
+            {% endif %}
+
+            {% if field.name == 'address_other' %}
+            </div>
+            {% endif %}
+
+         {% endfor %}
+
+         <div class="row" style="margin-top: 5em;">
+            <div class="right-align">
+               <a href="{% url 'registration:guardian-detail' guardian.id %}" class="btn-large grey"><i class="material-icons left">cancel</i> Cancel</a>
+               <button class="btn-large waves-effect waves-light" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+            </div>
+         </div>
+      </form>
+
+      <div class="row">
+         <h4 class="teal-text">Students</h4>
+      </div>
+      <div class="row">
+         <div class="col s12 m9">
+            {% if guardian.student_guardian.all|length > 0 %}
+            <table class="highlight">
+               <thead>
+                  <tr>
+                     <th class="teal lighten-4"><strong>Student name</strong></th>
+                     <th class="teal lighten-4"><strong>Relation</strong></th>
+                     <th class="teal lighten-4"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for sg in guardian.student_guardian.all %}
+                  <tr>
+                     <td>{{sg.student}}</td>
+                     <td>{{sg}}</td>
+                     <td class="center-align">
+                        <a class="btn-small" href="{{ sg.student.get_absolute_url }}"><i class="material-icons left">visibility</i> View</a>
+                        <a class="btn-small red darken-3" href="{% url 'registration:studentguardian-delete' sg.id 'guardian' %}"><i class="material-icons left">call_split</i> Unlink</a>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+            {% else %}
+            <p>There are no students associated to this guardian.</p>
+            {% endif %}
+         </div>
+      </div>
+
+      <div class="row">
+         <div class="right-align">
+            <a class="btn waves-effect waves-light" href="{% url 'registration:student-create-gpk' guardian.id %}"><i class="material-icons left">person_add</i> Link new student</a>
+            <a class="btn waves-effect waves-light" href="{% url 'registration:studentguardian-create-gpk' guardian.id %}"><i class="material-icons left">call_merge</i> Link existing student</a>
+         </div>
+      </div>
+
+   </div>
+</div>
+</div>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}New registration | {% endblock  %}
+
+
+{% block custom_styles %}
+
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+    <form action="" method="post">
+    {% csrf_token %}
+        <h3 class="teal lighten-1 white-text">Create registration</h3>
+        {% load materializecss %}
+
+        {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+        <div class="teal lighten-5 z-depth-1" style='padding: 2em;'>
+            <div class="row">
+                <div class="input-field col s12 m4{% if form.student.errors %}red-text{% endif %}" style="margin-top: 0;">{{form.student.label}}{{form.student}}<span class="red-text">{{form.student.errors}}</span></div>
+                {{form.grade|materializecss:'s6 m1'}}
+                <div class="input-field col s6 m3">
+                    <i class="material-icons prefix">date_range</i>
+                    <input type="date" name="registration_date" id="registration_date" class="datepicker" value="{{form.registration_date.value|date:"Y-m-d"}}" />
+                    <label for="registration_date">Registration Date</label>
+                </div>
+            </div>
+            <div class="row">
+                {{form.notes|materializecss:'s12 m9, icon=note'}}
+            </div>
+            <div class="row">
+                {{form.is_active|materializecss:'s12 m9'}}
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 5em;">
+            <button class="btn-large waves-effect waves-light right" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+        </div>
+    </form>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}{{course}} | {% endblock  %}
+
+{% block custom_styles %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/details.css" %}" />
+{% endblock  %}
+
+{% block content %}
+
+<h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">{{course}}</h2>
+
+<h4 class="teal-text section">Course Information</h4>
+<div class="row">
+   <div class="col s6 m3">
+      <p><strong>Grade:</strong></p>
+      <p class="grey lighten-2">{{course.grade}}</p>
+   </div>
+   <div class="col s6 m3">
+      <p><strong>Semester:</strong></p>
+      <p class="grey lighten-2">{{course.semester}}</p>
+   </div>
+</div>
+<div class="row">
+   <div class="col s12 m6">
+      <p><strong>Teachers</strong></p>
+      <div class="collection">
+         <a href="{{course.teacher.get_absolute_url}}" class="collection-item">{{course.teacher}} (Main teacher)</a>
+         {% if course.ta_1 %}
+            <a href="{{course.ta_1.get_absolute_url}}" class="collection-item">{{course.ta_1}} (1st assistant)</a>
+         {% endif %}
+         {% if course.ta_2 %}
+            <a href="{{course.ta_2.get_absolute_url}}" class="collection-item">{{course.ta_2}} (2nd assistant)</a>
+         {% endif %}
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col s12 m6">
+      <p><strong>Syllabus:</strong></p>
+      <p class="grey lighten-2">{{course.syllabus}}</p>
+   </div>
+</div>
+
+<div class="row" style="margin-top: 5em;">
+   <div class="right">
+      <a class="btn-large waves-effect waves-light" href="{% url 'faculty:course-update' course.id %}"><i class="material-icons left">edit</i> Edit course</a>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <div class="row">
+      <h4 class="teal-text">Schedule Information</h4>
+   </div>
+   <div class="row">
+      <div class="col s12 m9">
+         {% if course.schedule_set.count > 0 %}
+            <table class="highlight">
+               <thead>
+                  <tr>
+                     <th class="teal lighten-4"><strong>Weekday</strong></th>
+                     <th class="teal lighten-4"><strong>Room</strong></th>
+                     <th class="teal lighten-4"><strong>Start time</strong></th>
+                     <th class="teal lighten-4"><strong>End time</strong></th>
+                     <th class="teal lighten-4"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for schedule in course.schedule_set.all %}
+                     <tr>
+                        <td>{{schedule.get_weekday}}</td>
+                        <td><a href="{% url 'faculty:room-schedule-detail' schedule.room %}">{{schedule.room}}</a></td>
+                        <td>{{schedule.start_time}}</td>
+                        <td>{{schedule.end_time}}</td>
+                        <td>
+                           <a href="{% url 'faculty:schedule-update' schedule.id 'course' %}" class="btn-small"><i class="material-icons left">edit</i> Edit</a>
+                           <a href="{% url 'faculty:schedule-delete' schedule.id 'course' %}" class="btn-small red darken-2"><i class="material-icons left">delete</i> Delete</a>
+                        </td>
+                     </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         {% else %}
+            <p>There are no schedules set for this course yet.</p>
+         {% endif %}
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12 m3"><a class="btn" href="{% url 'faculty:schedule-create-cpk' course.id %}"><i class="material-icons left">add</i> New schedule</a></div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <div class="row">
+      <h4 class="teal-text">Enrolled students</h4>
+   </div>
+   <div class="row">
+      <div class="col s12 m6">
+         {% if course.coursestudent_set.count > 0 %}
+            <table class="highlight">
+               <thead>
+                  <tr>
+                     <th class="teal lighten-4">Student name</th>
+                     <th class="teal lighten-4"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for cs in course.coursestudent_set.all %}
+                  <tr>
+                     <td><a href="{% url 'registration:student-detail' cs.student.id %}">{{cs.student}}</a></td>
+                     <td><a href="{% url 'faculty:coursestudent-delete' cs.id %}" class="btn-small red darken-2"><i class="material-icons left">delete</i> Un-enroll</a></td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         {% else %}
+            <p>There are no students enrolled in this course yet.</p>
+         {% endif %}
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12 m3"><a class="btn" href="{% url 'faculty:coursestudent-create-cpk' course.id %}"><i class="material-icons left">add</i> New enrollment</a></div>
+   </div>
+</div>
+
+{% endblock  %}

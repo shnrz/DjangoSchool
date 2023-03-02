@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}New staff | {% endblock  %}
+
+{% load staticfiles %}
+
+{% block custom_styles %}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+   <div class="col s12">
+      <form action="" method="post">
+         {% csrf_token %}
+
+         <h3 class="teal lighten-1 white-text">Create new staff</h3>
+
+         {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+         <div class="row">
+            <h4 class="teal-text">Personal information</h4>
+         </div>
+         {% load materializecss %}
+         {% for field in form %}
+
+            {% if field.name in 'first_name, position' %}
+                <div class="teal lighten-5 z-depth-1" style="padding: 2em;">
+            {% endif %}
+            {% if field.name in 'first_name, dob, phone_mobile_1, email, address_home, address_other, position, salary, notes' %}
+               <div class="row">
+            {% endif %}
+
+            {% if field.name == 'first_name' %}
+               {{field|materializecss:'s12 m3, icon=person'}}
+            {% elif field.name in 'dob, hire_date' %}
+               {{field|materializecss:'s12 m3, icon=date_range'}}
+            {% elif field.name == 'phone_mobile_1' %}
+               {{field|materializecss:'s12 m3, icon=phone'}}
+            {% elif field.name == 'email' %}
+               {{field|materializecss:'s12 m6, icon=email'}}
+            {% elif field.name == 'address_home' %}
+               {{field|materializecss:'s12 m9, icon=home'}}
+            {% elif field.name == 'address_other' %}
+               {{field|materializecss:'s12 m9, icon=place'}}
+            {% elif 'notes' in field.name %}
+               {{field|materializecss:'s12 m12, icon=note'}}
+            {% elif field.name == 'supervisor' %}
+               <div class="input-field col s6 m4{% if field.errors %}red-text{% endif %}" style="margin-top: 0;">
+                    {{field.label}}
+                    {{field}}
+                    <span class="red-text">{{field.errors}}</span>
+                </div>
+            {% elif field.name == 'salary' %}
+               {{field|materializecss:'s12 m3, icon=attach_money'}}
+            {% elif field.name == 'bank' %}
+               {{field|materializecss:'s12 m3, icon=account_balance'}}
+            {% else %}
+               {{field|materializecss:'s12 m3'}}
+            {% endif %}
+            {% if field.name in 'last_name_2, gender, phone_home, email, address_home, address_other, hire_date, account, notes' %}
+               </div>
+            {% endif %}
+            {% if field.name in 'address_other, notes' %}
+                </div>
+            {% endif %}
+            {% if field.name == 'address_other' %}
+            <div class="row">
+                <h4 class="teal-text">Employment information</h4>
+            </div>
+            {% endif %}
+         {% endfor %}
+
+         <div class="row right" style="margin-top: 5em;">
+            <a href="{% url 'faculty:index' %}" class="btn-large grey waves-effect waves-light" style='margin-right: 2em;'><i class="material-icons left">cancel</i> Cancel</a>
+            <button class="btn-large waves-effect waves-light right" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+         </div>
+      </form>
+   </div>
+</div>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

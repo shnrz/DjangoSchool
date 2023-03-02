@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}New course enrollment | {% endblock  %}
+
+{% load static %}
+
+{% block custom_styles %}
+
+{{form.media.css}}
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+   <div class="col s12">
+      <form action="" method="post">
+         {% csrf_token %}
+
+         <h3 class="teal lighten-1 white-text">New course enrollment</h3>
+
+         {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+         {% load materializecss %}
+
+         {% for field in form %}
+            <div class="row">
+               <div class="col s3 m2">
+                  <p><strong>{{field.label}}:</strong></p>
+               </div>
+               <div class="input-field col s9 m5{% if field.errors %} red-text{% endif %}" style="margin-top: 0; margin-bottom: 0;">
+                  {{field}}
+                  <span class="red-text">{{field.errors}}</span>
+               </div>
+            </div>
+         {% endfor %}
+
+         <div class="row right" style="margin-top: 5em;">
+            <a href="javascript:history.back()" class="btn btn-large grey"><i class="material-icons left">cancel</i> Cancel</a>
+            <button class="btn-large waves-effect waves-light" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+         </div>
+      </form>
+   </div>
+</div>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+{{form.media.js}}
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

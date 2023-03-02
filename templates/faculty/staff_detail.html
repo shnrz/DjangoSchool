@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}{{staff}} | {% endblock  %}
+
+{% block custom_styles %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/details.css" %}" />
+{% endblock  %}
+
+{% block content %}
+
+<h5 style="margin-top: 2em;">Staff Information</h5>
+<h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">{{ staff }}</h2>
+
+<div class="section">
+   <h4 class="teal-text">Personal Info</h4>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>First name</strong></p>
+         <p class="grey lighten-2">{{staff.first_name}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Middle name</strong></p>
+         <p class="grey lighten-2">{{staff.middle_name}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Last name 1</strong></p>
+         <p class="grey lighten-2">{{staff.last_name_1}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Last name 2</strong></p>
+         <p class="grey lighten-2">{{staff.last_name_2}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>Date of birth</strong></p>
+         <p class="grey lighten-2">{{staff.dob}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Gender</strong></p>
+         <p class="grey lighten-2">{% if staff.gender == 'M' %}Male{% else %}Female{% endif %}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12">
+         <p><strong>Notes</strong></p>
+         <p class="grey lighten-2">{{staff.notes}}</p>
+      </div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Contact Info</h4>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>Phone (mobile 1)</strong></p>
+         <p class="grey lighten-2">{{staff.phone_mobile_1}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Phone (mobile 2)</strong></p>
+         <p class="grey lighten-2">{{staff.phone_mobile_2}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Phone (home)</strong></p>
+         <p class="grey lighten-2">{{staff.phone_home}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12 m6">
+         <p><strong>Email</strong></p>
+         <p class="grey lighten-2">{{staff.email}}</p>
+      </div>
+   </div>
+   <div class="row">
+       <div class="col s12">
+           <p><strong>Address (home)</strong></p>
+           <p class="grey lighten-2">{{staff.address_home}}</p>
+       </div>
+       <div class="col s12">
+           <p><strong>Address (other)</strong></p>
+           <p class="grey lighten-2">{{staff.address_other}}</p>
+       </div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Employment Information</h4>
+   <div class="row">
+      <div class="col s12 m3">
+         <p><strong>Position</strong></p>
+         <p class="grey lighten-2">{{staff.position}}</p>
+      </div>
+      <div class="col s12 m4">
+         <p><strong>Supervisor</strong></p>
+         {% if staff.supervisor == None %}
+         <p class="grey lighten-2">None</p>
+         {% else %}
+         <div class="collection">
+            <a class="collection-item" href="{{staff.supervisor.get_absolute_url}}">{{staff.supervisor}}</a>
+         </div>
+         {% endif %}
+      </div>
+      <div class="col s12 m3">
+         <p><strong>Hire date</strong></p>
+         <p class="grey lighten-2">{{staff.hire_date}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12 m3">
+         <p><strong>Salary</strong></p>
+         <p class="grey lighten-2">{{staff.salary}}</p>
+      </div>
+      <div class="col s12 m3">
+         <p><strong>Pay method</strong></p>
+         <p class="grey lighten-2">{{staff.pay_method}}</p>
+      </div>
+      <div class="col s12 m3">
+         <p><strong>Bank</strong></p>
+         <p class="grey lighten-2">{{staff.bank}}</p>
+      </div>
+      <div class="col s12 m3">
+         <p><strong>Account No.</strong></p>
+         <p class="grey lighten-2">{{staff.account}}</p>
+      </div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Assigned courses</h4>
+   <div class="row">
+      <div class="col s12 m6">
+         {% if staff.teacher_course.count > 0 or staff.ta1_course.count > 0 or staff.ta2_course.count > 0 %}
+            <div class="collection">
+               {% for course in staff.teacher_course.all %}
+                  <a href="{% url 'faculty:course-detail' course.id  %}" class="collection-item">{{course}} (Teacher)</a>
+               {% endfor %}
+               {% for course in staff.ta1_course.all %}
+                  <a href="{% url 'faculty:course-detail' course.id  %}" class="collection-item">{{course}} (First TA)</a>
+               {% endfor %}
+               {% for course in staff.ta2_course.all %}
+                  <a href="{% url 'faculty:course-detail' course.id  %}" class="collection-item">{{course}} (Second TA)</a>
+               {% endfor %}
+            </div>
+         {% else %}
+            <p>This staff member is not currently assigned to any courses.</p>
+         {% endif %}
+      </div>
+   </div>
+</div>
+
+<div class="row" style="margin-top: 5em;">
+   <a class="btn-large waves-effect waves-light right" href="{% url 'faculty:staff-update' staff.id %}"><i class="material-icons left">edit</i> Edit staff</a>
+</div>
+
+{% endblock  %}

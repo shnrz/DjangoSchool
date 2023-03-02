@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}(edit) {{student}} | {% endblock  %}
+
+{% load staticfiles %}
+
+{% block custom_styles %}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+   <div class="col s12">
+      <form action="" method="post">
+         {% csrf_token %}
+
+        <h5 style="margin-top: 2em;">Edit student</h5>
+        <h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">{{ student }}</h2>
+
+         {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+         <div class="row">
+            <h4 class="teal-text">Student information</h4>
+         </div>
+
+         {% load materializecss %}
+         {% for field in form %}
+         {% if field.name == 'first_name' %}
+         <div class="teal lighten-5 z-depth-1" style="padding: 2em;">
+         {% endif %}
+            {% if field.name in 'first_name, dob, email, guardians, notes' %}
+               <div class="row">
+            {% endif %}
+            {% if field.name == 'first_name' %}
+               {{field|materializecss:'s12 m3, icon=person'}}
+            {% elif field.name == 'phone_mobile_1' %}
+               {{field|materializecss:'s12 m3, icon=phone'}}
+            {% elif 'email' in field.name %}
+               {{field|materializecss:'s12 m6, icon=email'}}
+            {% elif 'address' in field.name %}
+               {{field|materializecss:'s12 m9'}}
+            {% elif 'notes' in field.name %}
+               {{field|materializecss:'s12 m12, icon=note'}}
+            {% elif field.name == 'dob' %}
+               <div class="input-field col s6 m3">
+                  <i class="material-icons prefix">date_range</i>
+                  <input type="date" name="dob" id="id_dob" class="datepicker" value="{{student.dob|date:"Y-m-d"}}" />
+                  <label for="id_dob">Date of birth</label>
+               </div>
+            {% elif field.name == 'guardians' %}
+               <div class="hide">{{field}}</div>
+            {% elif field.name == 'gender' %}
+               {{field|materializecss:'s6 m3'}}
+            {% else %}
+               {{field|materializecss:'s12 m3'}}
+            {% endif %}
+            {% if field.name in 'last_name_2, email, phone_home, guardians, notes' %}
+               </div>
+            {% endif %}
+            {% if field.name == 'notes' %}
+            </div>
+            {% endif %}
+         {% endfor %}
+
+         <div class="row" style="margin-top: 5em;">
+            <div class="right-align">
+               <a href="{% url 'registration:student-detail' student.id %}" class="btn-large grey waves-effect waves-light"><i class="material-icons left">cancel</i> Cancel</a>
+               <button class="btn-large waves-effect waves-light" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+            </div>
+         </div>
+      </form>
+
+      <div class="row">
+         <h4 class="teal-text">Guardians</h4>
+      </div>
+      <div class="row">
+         <div class="col s12 m9">
+            <table class="highlight">
+               <thead>
+                  <tr>
+                     <th class="teal lighten-4"><strong>Guardian name</strong></th>
+                     <th class="teal lighten-4"><strong>Relation</strong></th>
+                     <th class="teal lighten-4"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for sg in student.student_guardian.all %}
+                  <tr>
+                     <td>{{sg.guardian}}</td>
+                     <td>{{sg}}</td>
+                     <td class="center-align">
+                        <a class="btn-small" href="{{ sg.guardian.get_absolute_url }}"><i class="material-icons left">visibility</i> View</a>
+                        <a class="btn btn-small red darken-3{% if student.student_guardian.all|length == 1 %} disabled{% endif %}" href="{% url 'registration:studentguardian-delete' sg.id 'student' %}"><i class="material-icons left">call_split</i> Unlink</a>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+
+      <div class="row">
+            <div class="right-align">
+               <a class="btn waves-effect waves-light" href="{% url 'registration:guardian-create-spk' student.id %}"><i class="material-icons left">person_add</i> Link new guardian</a>
+               <a class="btn waves-effect waves-light" href="{% url 'registration:studentguardian-create-spk' student.id %}"><i class="material-icons left">call_merge</i> Link existing guardian</a>
+            </div>
+         </div>
+
+      <div class="row">
+         <h4 class="teal-text">Registrations</h4>
+      </div>
+      <div class="row">
+         <div class="col s12 m6">
+            {% if student.registration_set.all|length > 0 %}
+               <div class="collection">
+                  {% for registration in student.registration_set.all %}
+                     <a href="{{ registration.get_absolute_url }}" class="collection-item">{{registration}}</a>
+                  {% endfor %}
+               </div>
+            {% else %}
+               <p>There are no registrations for this student.</p>
+            {% endif %}
+         </div>
+      </div>
+      <div class="row">
+         <div class="col s12">
+            <a class="btn waves-effect waves-light right" href="{% url 'registration:registration-create-spk' student.id %}"><i class="material-icons left">add</i> New registration</a>
+         </div>
+      </div>
+
+      <div class="row">
+         <h4 class="teal-text">Courses</h4>
+      </div>
+      <div class="row">
+         <div class="col s12 m9">
+            {% if student.coursestudent_set.count > 0 %}
+               <table class="highlight">
+                  <thead>
+                     <tr>
+                        <th class="teal lighten-4"><strong>Course name</strong></th>
+                        <th class="teal lighten-4"></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for cs in student.coursestudent_set.all %}
+                     <tr>
+                        <td><a href="{{cs.course.get_absolute_url}}">{{cs.course}}</a></td>
+                        <td>
+                           <a class="btn btn-small red darken-3" href="{% url 'faculty:coursestudent-delete' cs.id %}"><i class="material-icons left">delete</i> Un-enroll</a>
+                        </td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            {% else %}
+               <p>This student is not enrolled in any courses yet.</p>
+            {% endif %}
+         </div>
+      </div>
+
+      <div class="row">
+         <div class="col s12">
+            <a class="btn waves-effect waves-light right" href="{% url 'faculty:coursestudent-create-spk' student.id %}"><i class="material-icons left">add</i> Enroll course</a>
+         </div>
+      </div>
+
+   </div>
+</div>
+</div>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

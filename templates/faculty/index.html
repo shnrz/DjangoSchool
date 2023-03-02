@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Home | {% endblock  %}
+
+{% block content %}
+   <div class="row">
+      <div class="col s12">
+         <h1>Faculty</h1>
+         <p>Welcome to the CNI faculty system.</p>
+      </div>
+   </div>
+   <div class="row">
+
+      <div class="col s12 m4">
+         <div class="collection with-header">
+            <div class="collection-header teal white-text"><h5>Staff</h5></div>
+            <a href="{% url 'faculty:staff-create' %}" class="collection-item teal-text text-darken-1"><i class="material-icons">person_add</i> Create staff</a>
+            <a href="{% url 'faculty:staff-list' %}" class="collection-item teal-text text-darken-1"><i class="material-icons">folder</i> Browse staff</a>
+         </div>
+      </div>
+
+      <div class="col s12 m4">
+         <div class="collection with-header">
+            <div class="collection-header teal white-text"><h5>Course</h5></div>
+            <a class="collection-item teal-text text-darken-1" href="{% url 'faculty:course-create' %}"><i class="material-icons">add</i> Create course</a>
+            <a class="collection-item teal-text text-darken-1" href="{% url 'faculty:course-list' %}"><i class="material-icons">folder</i> Browse courses</a>
+            <a class="collection-item teal-text text-darken-1" href="{% url 'faculty:coursestudent-create' %}"><i class="material-icons">person_add</i> Enroll student</a>
+         </div>
+      </div>
+      <div class="col s12 m4">
+         <div class="collection with-header">
+            <div class="collection-header teal white-text"><h5>Schedule</h5></div>
+            <a class="collection-item teal-text text-darken-1" href="{% url 'faculty:rooms-list' %}"><i class="material-icons">access_time</i> See schedules</a>
+         </div>
+      </div>
+
+   </div>
+
+{% endblock  %}

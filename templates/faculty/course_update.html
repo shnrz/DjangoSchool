@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}(edit) {{course}} | {% endblock  %}
+
+
+{% block custom_styles %}
+
+    {% load static %}
+    {{form.media.css}}
+    <link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+    <h3 class="teal lighten-1 white-text">Edit course</h3>
+    <div class="row">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% load materializecss %}
+
+            {% if form.non_field_errors %}
+             <div class="row">
+                <div class="col s12 m9 card red lighten-4">
+                   <div class="card-content red-text">
+                      <span class="card-title"><strong>Error:</strong></span>
+                      <p>{{form.non_field_errors}}</p>
+                   </div>
+                </div>
+                <div class="col m3 show-on-medium-and-up"></div>
+             </div>
+             {% endif %}
+
+            <div class="row">
+                <div class="teal lighten-5 z-depth-1 col s12 m8" style='padding: 2em;'>
+                {% for field in form %}
+                    <div class="row">
+                        {% if field.name in 'teacher, ta_1, ta_2' %}
+                            <div class="input-field col s12{% if field.errors %}red-text{% endif %}" style="margin-top: 0;">
+                                {{field.label}}
+                                {{field}}
+                                <span class="red-text">{{field.errors}}</span>
+                            </div>
+                        {% elif field.name == 'semester' %}
+                            {{field|materializecss:'s12, icon=date_range'}}
+                        {% else %}
+                            {{field|materializecss:'s12'}}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 5em;">
+                <div class="col s12 m8">
+                    <div class="right">
+                        <a href="javascript:history.back()" class="btn btn-large grey"><i class="material-icons left">cancel</i> Cancel</a>
+                        <button class="btn-large waves-effect waves-light" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock  %}
+
+{% block custom_scripts %}
+{{form.media.js}}
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

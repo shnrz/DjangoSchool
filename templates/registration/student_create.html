@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}New student | {% endblock  %}
+
+{% load staticfiles %}
+
+{% block custom_styles %}
+
+{% comment %} <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" /> {% endcomment %}
+{{form.media.css}}
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+   <div class="col s12">
+      <form action="" method="post">
+         {% csrf_token %}
+
+         <h3 class="teal lighten-1 white-text">Create new student</h3>
+
+         {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+         <div class="row">
+            <h4 class="teal-text">Student information</h4>
+         </div>
+         {% load materializecss %}
+         {% for field in form %}
+
+            {% if field.name in 'stud_fn, guard1_guardian' %}
+            <div class="teal lighten-5 z-depth-1" style="padding: 2em;">
+            {% endif %}
+            {% if 'fn' in field.name or 'gender' in field.name or 'email' in field.name or 'notes' in field.name or 'guardian' in field.name or 'phone_mobile1' in field.name or 'address' in field.name %}
+               <div class="row">
+            {% endif %}
+
+            {% if 'fn' in field.name %}
+               {{field|materializecss:'s12 m3,icon=person'}}
+            {% elif field.name == 'stud_dob' %}
+               {{field|materializecss:'s12 m3,icon=date_range'}}
+            {% elif 'mobile1' in field.name %}
+               {{field|materializecss:'s12 m3,icon=phone'}}
+            {% elif 'email' in field.name %}
+               {{field|materializecss:'s12 m6,icon=email'}}
+            {% elif 'relation' in field.name %}
+               {{field|materializecss:'s12 m6'}}
+            {% elif 'address_home' in field.name %}
+               {{field|materializecss:'s12 m9,icon=home'}}
+            {% elif 'address_work' in field.name %}
+               {{field|materializecss:'s12 m9,icon=work'}}
+            {% elif 'address_other' in field.name %}
+               {{field|materializecss:'s12 m9,icon=place'}}
+            {% elif 'notes' in field.name %}
+               {{field|materializecss:'s12 m12,icon=note'}}
+            {% elif 'guardian' in field.name %}
+               <div class="input-field col s12 m6{% if field.errors %}red-text{% endif %}" style="margin-top: 0;">
+                    {{field.label}}
+                    {{field}}
+                    <span class="red-text">{{field.errors}}</span>
+                </div>
+            {% else %}
+               {{field|materializecss:'s12 m3'}}
+            {% endif %}
+
+            {% if 'ln2' in field.name or field.name == 'stud_phone_home' or 'email' in field.name or 'notes' in field.name or 'relation' in field.name or 'phone_work' in field.name or 'address' in field.name %}
+               </div>
+            {% endif %}
+            {% if field.name in 'stud_notes, guard2_relation' %}
+            </div>
+            {% endif %}
+
+            {% if field.name == 'stud_notes' %}
+               <div class="row" style="margin-top: 4em;">
+                  <div class="col s12 flow-text">
+                     <p>Use the forms below to either associate the new student with an existing guardian or to create a new guardian that will be associated with this new student.</p>
+                     <ul class="browser-default">
+                        <li>At least 1 guardian must be provided for the new student.</li>
+                        <li>You do not have to fill out ALL the forms (you may leave some empty).</li>
+                     </ul>
+                  </div>
+               </div>
+               <h4 class="teal-text">Link existing guardian</h4>
+
+            {% elif field.name == 'guard2_relation' %}
+               <h4 class="teal-text">Create linked guardian</h4>
+               <ul class="collapsible expandable">
+                  <li>
+                     <div class="collapsible-header teal lighten-5">
+                        <i class="material-icons">person_add</i>
+                        New linked guardian (1) <i class="material-icons right">expand_more</i>
+                     </div>
+                     <div class="collapsible-body">
+            {% elif field.name == 'guard3_notes' %}
+                     </div>
+                  </li>
+                  <li>
+                     <div class="collapsible-header teal lighten-5">
+                        <i class="material-icons">person_add</i>
+                        New linked guardian (2) <i class="material-icons right">expand_more</i>
+                     </div>
+                     <div class="collapsible-body">
+
+            {% elif field.name == 'guard4_notes' %}
+                     </div>
+                  </li>
+               </ul>
+
+            {% endif %}
+         {% endfor %}
+
+         <div class="row" style="margin-top: 5em;">
+            <button class="btn-large waves-effect waves-light right" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+         </div>
+      </form>
+   </div>
+</div>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script> {% endcomment %}
+{{form.media.js}}
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

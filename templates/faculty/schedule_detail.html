@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{schedule.course}} schedule | {% endblock  %}
+
+{% block custom_styles %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/details.css" %}" />
+{% endblock  %}
+
+{% block content %}
+
+<h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">Schedule Info</h2>
+
+<div class="row">
+    <div class="col s12 m6">
+        <p><strong>Course:</strong></p>
+        <p class="grey lighten-2"><a href="{{schedule.course.get_absolute_url}}">{{schedule.course}}</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m3">
+        <p><strong>Weekday:</strong></p>
+        <p class="grey lighten-2">{{schedule.get_weekday}}</p>
+    </div>
+    <div class="col s6 m3">
+        <p><strong>Start time</strong></p>
+        <p class="grey lighten-2">{{schedule.start_time}}</p>
+    </div>
+    <div class="col s6 m3">
+        <p><strong>End time</strong></p>
+        <p class="grey lighten-2">{{schedule.end_time}}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m6">
+        <p><strong>Room</strong></p>
+        <p class="grey lighten-2"><a href="{{schedule.room.get_absolute_url}}">{{schedule.room}}</a></p>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 5em;">
+   <div class="right">
+      <a class="btn-large waves-effect waves-light" href="{% url 'faculty:schedule-update' schedule.id %}"><i class="material-icons left">edit</i> Edit</a>
+      <a class="btn-large waves-effect waves-light red darken-3" href="{% url 'faculty:schedule-delete' schedule.id 'room' %}" style="margin-left: 10px;"><i class="material-icons left">delete</i> Delete</a>
+   </div>
+</div>
+
+{% endblock  %}

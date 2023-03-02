@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}{{schedules.0.room}} schedule | {% endblock  %}
+
+{% block content %}
+
+<h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">{{ schedules.0.room }}</h2>
+
+<div class="row">
+    <div class="col s12">
+        <table>
+            <thead>
+                <tr>
+                    <th class="teal lighten-4"><strong>Weekday</strong></th>
+                    <th class="teal lighten-4"><strong>Start time</strong></th>
+                    <th class="teal lighten-4"><strong>End time</strong></th>
+                    <th class="teal lighten-4"><strong>Course</strong></th>
+                    <th class="teal lighten-4"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for schedule in schedules %}
+                <tr>
+                    <td>
+                    {% if schedule.weekday == 1 %}
+                    Monday
+                    {% elif schedule.weekday == 2 %}
+                    Tuesday
+                    {% elif schedule.weekday == 3 %}
+                    Wednesday
+                    {% elif schedule.weekday == 4 %}
+                    Thursday
+                    {% elif schedule.weekday == 5 %}
+                    Friday
+                    {% elif schedule.weekday == 6 %}
+                    Saturday
+                    {% else %}
+                    Sunday
+                    {% endif %}
+                    </td>
+                    <td>{{schedule.start_time}}</td>
+                    <td>{{schedule.end_time}}</td>
+                    <td><a href="{{schedule.course.get_absolute_url}}">{{schedule.course}}</a></td>
+                    <td>
+                        <a href="{% url 'faculty:schedule-update' schedule.id 'room' %}" class="btn-small"><i class="material-icons left">edit</i> Edit</a>
+                        <a href="{% url 'faculty:schedule-delete' schedule.id 'room' %}" class="btn-small red darken-2"><i class="material-icons left">delete</i> Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 right">
+        <a href="{% url 'faculty:schedule-create-rpk' schedules.0.room %}" class="btn-large"><i class="material-icons left">add</i> Add to schedule</a>
+    </div>
+</div>
+
+{% endblock  %}

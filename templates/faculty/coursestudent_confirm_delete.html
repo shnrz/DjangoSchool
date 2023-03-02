@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Un-enroll student | {% endblock title %}
+
+{% block custom_styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+{% endblock custom_styles %}
+
+{% block content %}
+
+<h1>Confirm un-enroll</h1>
+
+<div class="row">
+    <div class="col s12 m9">
+        <div class="card teal lighten-5">
+            <div class="card-content" style="line-height: 2em;">
+                <p>You are trying to un-enroll the student <strong>{{object.student|upper}}</strong> from the course <strong>{{object.course|upper}}</strong>.</p>
+                <p>Are you sure that you want to do this?</p>
+            </div>
+            <div class="card-action">
+                <form action="" method="post">
+                {% csrf_token %}
+                    <a href="javascript:history.back()" class="btn grey"><i class="material-icons left">cancel</i> Cancel</a>
+                    <i class="material-icons white-text">delete</i>
+                    <input class="btn red darken-2" type="submit" value="Un-enroll" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

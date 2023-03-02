@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}New schedule | {% endblock  %}
+
+
+{% block custom_styles %}
+
+    {% load static %}
+    {{form.media.css}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+    <form action="" method="post">
+    {% csrf_token %}
+        <h3 class="teal lighten-1 white-text">Create schedule</h3>
+        {% load materializecss %}
+
+        {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+        <div class="row">
+            <div class="col s9 teal lighten-5 z-depth-1" style='padding: 2em;'>
+                <div class="row">
+                    <div class="input-field col s12 m7{% if form.course.errors %} red-text{% endif %}" style="margin-top: 0;">
+                        {{form.course.label}}
+                        {{form.course}}
+                        <span class="red-text">{{form.course.errors}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    {{form.weekday|materializecss:'s12 m3, icon=event'}}
+                    <div class="input-field col s6 m3{% if form.start_time.errors %} red-text{% endif %}">
+                        <i class="material-icons prefix">access_time</i>
+                        <input type="time" name="{{form.start_time.html_name}}" id="{{ form.start_time.id_for_label }}" class="validate" required {% if form.start_time.data %}value="{{form.start_time.data}}"{% endif %} />
+                        <label for="{{form.start_time.id_for_label}}">{{form.start_time.label}}</label>
+                        <span class="red-text">{{form.start_time.errors}}</span>
+                    </div>
+                    <div class="input-field col s6 m3{% if form.end_time.errors %} red-text{% endif %}">
+                        <i class="material-icons prefix">access_time</i>
+                        <input type="time" name="{{form.end_time.html_name}}" id="{{ form.end_time.id_for_label }}" class="validate" required {% if form.end_time.data %}value="{{form.end_time.data}}"{% endif %} />
+                        <label for="{{form.end_time.id_for_label}}">{{form.end_time.label}}</label>
+                        <span class="red-text">{{form.end_time.errors}}</span>
+                    </div>
+                </div>
+                <div class="row">{{form.room|materializecss:'s12 m7, icon=place'}}</div>
+
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 5em;">
+            <div class="col s9">
+                <div class="right">
+                    <a href="javascript:history.back()" class="btn btn-large grey"><i class="material-icons left">cancel</i> Cancel</a>
+                    <button class="btn-large waves-effect waves-light" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+{{form.media.js}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}

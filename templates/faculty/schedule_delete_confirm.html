@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete schedule | {% endblock title %}
+
+{% block custom_styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+{% endblock custom_styles %}
+
+{% block content %}
+
+<h1>Confirm delete</h1>
+
+<div class="row">
+    <div class="col s12 m9">
+        <div class="card">
+            <div class="card-content" style="line-height: 2em;">
+                <p>You are trying to delete the following schedule:</p>
+                <ul style="padding-left: 2em;">
+                    <li><strong>COURSE:</strong> {{object.course}}</li>
+                    <li><strong>WEEKDAY:</strong> {{object.get_weekday}}</li>
+                    <li><strong>START TIME:</strong> {{object.start_time}}</li>
+                    <li><strong>END TIME:</strong> {{object.end_time}}</li>
+                    <li><strong>ROOM:</strong> {{object.room}}</li>
+                </ul>
+                <p>Are you sure you want to delete?</p>
+            </div>
+            <div class="card-action">
+                <form action="" method="post">
+                {% csrf_token %}
+                    <a href="javascript:history.back()" class="btn grey"><i class="material-icons left">cancel</i> Cancel</a>
+                    <i class="material-icons white-text">delete</i>
+                    <input class="btn red darken-2" type="submit" value="Delete" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

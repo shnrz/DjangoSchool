@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}All schedules | {% endblock  %}
+
+{% block content %}
+
+<h2 class="teal lighten-1 white-text" style="padding: .35em;"><em>Schedules</em></h2>
+
+{% if rooms %}
+
+   <div class="row">
+      <div class="input-field col s12 m6">
+         <p>Select a room below to see its schedule.</p>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col s12 m6">
+         <div class="collection" id="filterList">
+            {% for room in rooms %}
+            <a class="collection-item" href="{% url 'faculty:room-schedule-detail' room %}">{{ room }}</a>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+
+{% else %}
+   <p>There are no schedules in the system yet.</p>
+{% endif %}
+
+{% endblock  %}
+
+{% block custom_scripts %}
+{% load static %}
+<script type="text/javascript" language='Javascript' src="{% static "js/filtercollection.js" %}"></script>
+{% endblock  %}

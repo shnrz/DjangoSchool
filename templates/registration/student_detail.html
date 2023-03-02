@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}{{student}} | {% endblock  %}
+
+{% block custom_styles %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/details.css" %}" />
+{% endblock  %}
+
+{% block content %}
+
+<h5 style="margin-top: 2em;">Student Information</h5>
+<h2 class="teal lighten-1 white-text" style="padding: 10px; font-style: italic;">{{ student }}</h2>
+
+<div class="section">
+   <h4 class="teal-text">Personal Info</h4>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>First name</strong></p>
+         <p class="grey lighten-2">{{student.first_name}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Middle name</strong></p>
+         <p class="grey lighten-2">{{student.middle_name}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Last name 1</strong></p>
+         <p class="grey lighten-2">{{student.last_name_1}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Last name 2</strong></p>
+         <p class="grey lighten-2">{{student.last_name_2}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>Date of birth</strong></p>
+         <p class="grey lighten-2">{{student.dob}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Gender</strong></p>
+         <p class="grey lighten-2">{% if student.gender == 'M' %}Male{% else %}Female{% endif %}</p>
+      </div>
+      <div class="col s12 m6">
+         <p><strong>Guardians</strong></p>
+         <div class="collection">
+            {% for sg in student.student_guardian.all %}
+            <a class="collection-item" href="{{sg.guardian.get_absolute_url}}">{{sg.guardian}} ({{sg}})</a>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12">
+         <p><strong>Notes</strong></p>
+         <p class="grey lighten-2">{{student.notes}}</p>
+      </div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Contact Info</h4>
+   <div class="row">
+      <div class="col s6 m3">
+         <p><strong>Phone (mobile)</strong></p>
+         <p class="grey lighten-2">{{student.phone_mobile_1}}</p>
+      </div>
+      <div class="col s6 m3">
+         <p><strong>Phone (home)</strong></p>
+         <p class="grey lighten-2">{{student.phone_home}}</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col s12 m6">
+         <p><strong>Email</strong></p>
+         <p class="grey lighten-2">{{student.email}}</p>
+      </div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Registrations</h4>
+   <div class="row">
+      <div class="col s12 m6">
+         {% if student.registration_set.all|length > 0 %}
+            <div class="collection">
+               {% for registration in student.registration_set.all %}
+               <a href="{{ registration.get_absolute_url }}" class="collection-item">{{ registration }}</a>
+               {% endfor %}
+            </div>
+         {% else %}
+            <p>There are no registrations for this student.</p>
+         {% endif %}
+      </div>
+   </div>
+</div>
+
+<div class="divider"></div>
+<div class="section">
+   <h4 class="teal-text">Enrolled courses</h4>
+   <div class="row">
+      <div class="col s12 m6">
+         {% if student.coursestudent_set.count > 0 %}
+            <div class="collection">
+               {% for cs in student.coursestudent_set.all %}
+                  <a href="{% url 'faculty:course-detail' cs.course.id  %}" class="collection-item">{{cs.course}}</a>
+               {% endfor %}
+            </div>
+         {% else %}
+            <p>This student is not currently enrolled in any courses.</p>
+         {% endif %}
+      </div>
+   </div>
+</div>
+
+<div class="row" style="margin-top: 5em;">
+   <a class="btn-large waves-effect waves-light right" href="{% url 'registration:student-update' student.id %}"><i class="material-icons left">edit</i> Edit student</a>
+</div>
+
+{% endblock  %}

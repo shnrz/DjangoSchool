@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}New Guardian | {% endblock  %}
+
+{% load static %}
+
+{% block custom_styles %}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static "css/forms.css" %}" />
+
+{% endblock  %}
+
+{% block content %}
+
+<div class="row">
+   <div class="col s12">
+      <form action="" method="post">
+         {% csrf_token %}
+
+         <h3 class="teal lighten-1 white-text">Create new guardian</h3>
+
+         {% if form.non_field_errors %}
+         <div class="row">
+            <div class="col s12 m9 card red lighten-4">
+               <div class="card-content red-text">
+                  <span class="card-title"><strong>Error:</strong></span>
+                  <p>{{form.non_field_errors}}</p>
+               </div>
+            </div>
+            <div class="col m3 show-on-medium-and-up"></div>
+         </div>
+         {% endif %}
+
+         <div class="row">
+            <h4 class="teal-text">Guardian information</h4>
+         </div>
+         {% load materializecss %}
+         {% for field in form %}
+
+            {% if field.name in 'first_name, phone_mobile_1, gender, notes, student_1, student_2, new_student_after' %}
+               <div class="row">
+            {% endif %}
+
+            {% if field.name == 'first_name' %}
+               {{field|materializecss:'s12 m3, icon=person'}}
+            {% elif  field.name == 'email' %}
+               {{field|materializecss:'s12 m6, icon=email'}}
+            {% elif field.name == 'phone_mobile_1' %}
+               {{field|materializecss:'s12 m3, icon=phone'}}
+            {% elif field.name == 'address_home' %}
+               {{field|materializecss:'s12 m9, icon=home'}}
+            {% elif field.name == 'address_work' %}
+               {{field|materializecss:'s12 m9, icon=work'}}
+            {% elif field.name == 'address_other' %}
+               {{field|materializecss:'s12 m9, icon=place'}}
+            {% elif field.name in 'stud1_relation, stud2_relation, new_student_after' %}
+               {{field|materializecss:'s12 m6'}}
+            {% elif field.name == 'notes' %}
+               {{field|materializecss:'s12 m12, icon=note'}}
+            {% elif 'student_' in field.name %}
+                <div class="input-field col s6 m6{% if field.errors %}red-text{% endif %}" style="margin-top: 0;">
+                    {{field.label}}
+                    {{field}}
+                    <span class="red-text">{{field.errors}}</span>
+                </div>
+            {% else %}
+               {{field|materializecss:'s6 m3'}}
+            {% endif %}
+
+            {% if field.name in 'last_name_2, phone_work, email, notes, stud1_relation, stud2_relation, new_student_after' %}
+               </div>
+            {% endif %}
+
+            {% if field.name == 'notes' %}
+               <h3 class="teal lighten-1 white-text">Associated students</h3>
+               <h4 class="teal-text">Link to existing students</h4>
+            {% elif field.name == 'stud2_relation' %}
+               <h4 class="teal-text">Link to a new student</h4>
+            {% endif %}
+         {% endfor %}
+
+         <div class="row" style="margin-top: 5em;">
+            <button class="btn-large waves-effect waves-light right" type="submit" value="Submit"><i class="material-icons left">save</i> Save</button>
+         </div>
+      </form>
+   </div>
+</div>
+
+{% endblock  %}
+
+{% block custom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script type="text/javascript" language='Javascript' src="{% static "js/combofield.js" %}"></script>
+{% endblock  %}
